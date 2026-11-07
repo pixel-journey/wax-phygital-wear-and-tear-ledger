@@ -5,6 +5,8 @@
 
 Wear and repair events clamped to a max. Not an oracle and not mutable NFT data.
 
+The course is [EDUCATION.md](./EDUCATION.md). 100, then -30, -80, and +10, finishes at 10 `worn`. A backwards clock is refused.
+
 The August 2026 README described a live feed, an oracle, or a device vibration. This tree does not do those things.
 
 ## What is actually in the repo
