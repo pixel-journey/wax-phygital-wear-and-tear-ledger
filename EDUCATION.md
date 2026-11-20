@@ -1,21 +1,20 @@
-# Education — a counter that clamps
+# Education — a durability counter
 
-> **Rung:** `npm test`.  
-> **The test is the rule.** No oracle and no NFT.
+> **Rung:** `npm test` passes. Events are arguments. No oracle and no NFT is read.  
+> **The test is the rule.** A state machine that also refuses a skip is [wax-escrowed-merch-custody-timeline](https://github.com/pixel-journey/wax-escrowed-merch-custody-timeline).
 
-```ts
-applyWear(100n, [
-  { at: 1, delta: -30n },
-  { at: 2, delta: -80n },
-  { at: 3, delta: 10n },
-])
-// { ok: true, remaining: 10n, condition: "worn" }
-```
+## Predict, then run
 
-Start at max. Add each delta. Below 0 becomes 0. Above max becomes max. After the second event the counter is 0, then the repair of 10 leaves 10, which is `worn`. `new` means remaining equals max. `spent` means 0. A later `at` that is smaller is `{ ok: false }`. A zero delta is refused. The backwards case is tested. The zero-delta string is in `wear.ts` and is not asserted.
+Remaining starts at `max`. It clamps at `0` and at `max`. Equal timestamps are allowed. A later `at` that is smaller is refused. A zero delta is refused.
 
-`wax-phygital-redemption-milestone-stepper` shows six fixture titles. It does not call `applyWear`. Neither reads mutable data. Neither is native NFT backing.
+| Call | Locked result |
+| --- | --- |
+| max `100`, then `−30`, `−80`, `+10` | remaining `10`, condition `worn`. The `−80` hit zero before the repair. |
+| max `10`, no events | remaining `10`, `new` |
+| max `10`, delta `+5` | remaining `10`, `new`. A repair cannot pass the max. |
+| max `10`, delta `−10` | remaining `0`, `spent` |
+| `at: 2` then `at: 1` | not ok |
 
-```bash
-npm test
-```
+`worn` is everything that is neither `new` nor `spent`.
+
+The HTTP examples include an Atomic Packs `unboxassets` row. That request is unsent, and it is not this counter.
